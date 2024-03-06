@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shipping
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: shipping
+  template:
+    metadata:
+      labels:
+        app: shipping
+    spec:
+      containers:
+      - name: shipping
+   # Add your Artifact Registry container repo here
+        image: ${IMAGE_REPO}
+        env:
+        - name: INSTANCE_CONNECTION_NAME
+          value: ${INSTANCE_CONNECTION_NAME}
+        - name: DB_USER
+          value: evolution
+        - name: DB_PASS
+          value: evolution
+        - name: DB_NAME
+          value: product_details
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shipping
+spec:
+  type: LoadBalancer
+  selector:
+    app: shipping
+  ports:
+  - port: 80
+    targetPort: 5000

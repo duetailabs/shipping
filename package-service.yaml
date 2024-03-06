@@ -1,0 +1,43 @@
+swagger: "2.0"
+info:
+ title: Shipping and Package Information API
+ description: This API provides information about shipping and packages.
+ version: 1.0.0
+host: shipping.googleapis.com
+schemes:
+ - https
+produces:
+ - application/json
+paths:
+ /packages/{product_id}:
+   get:
+     summary: Get information about a package
+     description: This method returns information about a package, including its height, width, depth, weight, and any special handling instructions.
+     parameters:
+       - name: product_id
+         in: path
+         required: true
+         type: integer
+         format: int64
+     responses:
+       "200":
+         description: A successful response
+         schema:
+           type: object
+           properties:
+             height:
+               type: integer
+               format: int64
+             width:
+               type: integer
+               format: int64
+             depth:
+               type: integer
+               format: int64
+             weight:
+               type: integer
+               format: int64
+             special_handling_instructions:
+               type: string
+       "404":
+         description: The product_id was not found
