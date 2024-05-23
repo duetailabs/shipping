@@ -20,6 +20,16 @@ class Package(Base):
     weight = Column(Float, nullable=False)
     special_handling_instructions = Column(String, nullable=True)
 
+    def to_dict(self):
+        return {
+            'product_id': self.product_id,
+            'height': self.height,
+            'width': self.width,
+            'depth': self.depth,
+            'weight': self.weight,
+            'special_handling_instructions': self.special_handling_instructions,
+        }
+
 
 def create_tables():
     Base.metadata.create_all(engine)
