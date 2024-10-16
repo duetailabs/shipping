@@ -1,17 +1,12 @@
 import os
-
-
 from google.cloud.sql.connector import Connector, IPTypes
 import sqlalchemy
-
 
 # You may need to manually import pg8000 and Base as follows
 import pg8000
 from sqlalchemy.ext.declarative import declarative_base
 
-
-
-# standard CloudSQL connector using username and password
+# Initialize a connection pool for a Cloud SQL instance of Postgres
 def connect_with_connector() -> sqlalchemy.engine.base.Engine:
    """Initializes a connection pool for a Cloud SQL instance of Postgres."""
    # Note: Saving credentials in environment variables is convenient, but not
@@ -55,12 +50,9 @@ def connect_with_connector() -> sqlalchemy.engine.base.Engine:
 # Create a connection pool
 engine = connect_with_connector()
 
-
 # Create a sessionmaker class to create new sessions
 SessionMaker = sqlalchemy.orm.sessionmaker(bind=engine)
 
-
 # Create a Base class for ORM
-# You may need to manually fix the following
 Base = declarative_base()
 
