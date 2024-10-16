@@ -11,7 +11,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 
-
+# standard CloudSQL connector using username and password
 def connect_with_connector() -> sqlalchemy.engine.base.Engine:
    """Initializes a connection pool for a Cloud SQL instance of Postgres."""
    # Note: Saving credentials in environment variables is convenient, but not
