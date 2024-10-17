@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, abort, request
-
+import requests, time
 from data_model import Package
 from connect_connector import SessionMaker
 
@@ -7,25 +7,40 @@ app = Flask(__name__)
 
 session_maker = SessionMaker()
 
-# standard http handlers
+# create acme backend routes
+# discovery backend route
 @app.route('/discovery', methods=['GET'])
 def discovery():
     return jsonify({
         "name": "shipping",
         "version": "1.0",
-        "owners": ["ameerabbas", "janedoe"],
+        "owners": ["ameerabb", "lonestar"],
+        "team": "genAIs",
         "organization": "acme"
     })
 
-# create a /liveness and /readiness endpoints that return status, code and timestamps
+# liveness backend route
 @app.route('/liveness', methods=['GET'])
 def liveness():
-    return jsonify({"status": "live", "code": 200, "timestamp": "2023-04-27T12:00:00Z"})
+    return jsonify({"status": "live", "code": 200, "timestamp": time.time()})
 
+# liveness readiness route
 @app.route('/readiness', methods=['GET'])
 def readiness():
-    return jsonify({"status": "ready", "code": 200, "timestamp": "2023-04-27T12:00:00Z"})
-# End of standard http handlers
+    return jsonify({"status": "ready", "code": 200, "timestamp": time.time()})
+# End of acme backend routes
+
+# function that returns the name and version of the app
+def get_app_details():
+    """Fetches app details from the /discovery endpoint."""
+    try:
+        response = requests.get('http://localhost:8000/discovery')  # Adjust URL if needed
+        response.raise_for_status()  # Raise an error for bad status codes
+        data = response.json()
+        return data.get('name', 'Unknown App'), data.get('version', 'Unknown Version')
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching app details: {e}")
+        return "Unknown App", "Unknown Version"
 
 # get a package from CloudSQL database
 # Endpoint that retrieves package details based on the provided product ID
@@ -33,9 +48,7 @@ def readiness():
 def get_package(product_id):
     """
     Get information about a package.
-
     This endpoint retrieves package details based on the provided product ID.
-
     :param product_id: The ID of the product.
     :return: JSON response containing package information or 404 if not found.
     """
@@ -52,7 +65,15 @@ def get_package(product_id):
             "special_handling_instructions": package.special_handling_instructions
         })
     else:
-        abort(404, description="The product_id was not found")
+        app_name, app_version = get_app_details()
+        abort(404, description={
+            "message": "The product_id was not found",
+            "timestamp": time.time(),
+            "app_name": app_name,
+            "version": app_version,
+            "called_method": "get_package",
+            "product_id": product_id
+        })
 
 # create a new package in the CloudSQL database
 # Endpoint that creates a new package in the database.
@@ -60,9 +81,7 @@ def get_package(product_id):
 def create_package():
     """
     Create a new package in the database.
-
     This endpoint allows creating a new package with specified details.
-
     :return: JSON response with the created package ID or 400 if invalid data.
     """
     data = request.get_json()
@@ -101,9 +120,7 @@ def create_package():
 def update_package(package_id):
     """
     Update an existing package in the database.
-
     This endpoint allows updating the details of an existing package.
-
     :param package_id: The ID of the package to update.
     :return: JSON response with updated package information or 404 if not found.
     """
@@ -147,9 +164,7 @@ def update_package(package_id):
 def delete_package(package_id):
     """
     Delete an existing package from the database.
-
     This endpoint allows deleting a package based on its ID.
-
     :param package_id: The ID of the package to delete.
     :return: 204 (No Content) if successful, 404 if not found.
     """
