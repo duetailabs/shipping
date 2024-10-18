@@ -1,2 +1,6 @@
 main.py
 local.py
+pyvenv.cfg
+**/lib
+**/bin
+**/__pycache__

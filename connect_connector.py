@@ -3,6 +3,7 @@ import os
 import sqlalchemy
 from google.cloud.sql.connector import Connector, IPTypes
 import pg8000
+from sqlalchemy.ext.declarative import declarative_base
 
 # Initialize a connection pool for a Cloud SQL instance of Postgres
 def connect_with_connector() -> sqlalchemy.engine.base.Engine:
@@ -43,20 +44,12 @@ def connect_with_connector() -> sqlalchemy.engine.base.Engine:
         # ...
     )
     return pool
-def getconn() -> sqlalchemy.engine.base.Engine:
-        conn: sqlalchemy.engine.base.Engine = connector.connect(
-            instance_connection_name,
-            "pg8000",
-            user=db_user,
-            password=db_pass,
-            db=db_name,
-            ip_type=ip_type,
-        )
-        return conn
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
 
-# Create a base class for declarative models
-engine = connect_with_connector()
-SessionMaker = sessionmaker(bind=engine)
+# create a sessionmaker class to create new sessions
+SessionMaker = sessionmaker(bind=connect_with_connector())
+
+# create a declarative base
 Base = declarative_base()
+
+# create an engine
+engine = connect_with_connector()

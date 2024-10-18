@@ -1,2 +1,5 @@
 # not indexed for Code Customization
 corp
+lib
+bin
+__pycache__
