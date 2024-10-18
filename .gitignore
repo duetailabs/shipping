@@ -1,5 +1,6 @@
 main.py
 local.py
+connect_connector.py
 pyvenv.cfg
 **/lib
 **/bin
