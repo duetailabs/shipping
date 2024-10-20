@@ -8,9 +8,7 @@ from sqlalchemy.ext.declarative import declarative_base
 # Initialize a connection pool for a Cloud SQL instance of Postgres
 def cloudsql_connector() -> sqlalchemy.engine.base.Engine:
    # Initializes a connection pool for a Cloud SQL instance of Postgres
-   instance_connection_name = os.environ[
-       "INSTANCE_CONNECTION_NAME"
-   ]  # e.g. 'project:region:instance'
+   instance_connection_name = os.environ["INSTANCE_CONNECTION_NAME"]  # e.g. 'project:region:instance'
    db_user = os.environ["DB_USER"]
    db_pass = os.environ["DB_PASS"]
    db_name = os.environ["DB_NAME"]
