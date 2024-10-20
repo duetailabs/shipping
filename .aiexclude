@@ -3,3 +3,4 @@ corp
 lib
 bin
 __pycache__
+db_init.py
