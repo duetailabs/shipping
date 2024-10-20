@@ -7,8 +7,8 @@ app = Flask(__name__)
 
 session_maker = SessionMaker()
 
-# create acme backend routes
-# discovery backend route
+# Create Acme Corp standard backend routes
+# Acme Corp discovery backend route
 @app.route('/discovery', methods=['GET'])
 def discovery():
     return jsonify({
@@ -19,16 +19,16 @@ def discovery():
         "organization": "acme"
     })
 
-# liveness backend route
+# Acme Corp liveness backend route
 @app.route('/liveness', methods=['GET'])
 def liveness():
     return jsonify({"status": "live", "code": 200, "timestamp": time.time()})
 
-# liveness readiness route
+# Acme Corp readiness backend route
 @app.route('/readiness', methods=['GET'])
 def readiness():
     return jsonify({"status": "ready", "code": 200, "timestamp": time.time()})
-# End of acme backend routes
+# End of Acme Corp standard backend routes
 
 # function that returns the name and version of the app
 def get_app_details():
@@ -45,7 +45,7 @@ def get_app_details():
 # get a package from CloudSQL database
 # Endpoint that retrieves package details based on the provided product ID
 @app.route('/packages/<int:product_id>', methods=['GET'])
-def get_package(product_id):
+def get_package_by_product_id(product_id):
     """
     Get information about a package.
     This endpoint retrieves package details based on the provided product ID.
@@ -78,7 +78,7 @@ def get_package(product_id):
 # create a new package in the CloudSQL database
 # Endpoint that creates a new package in the database.
 @app.route('/packages', methods=['POST'])
-def create_package():
+def create_new_package():
     """
     Create a new package in the database.
     This endpoint allows creating a new package with specified details.
@@ -117,7 +117,7 @@ def create_package():
 # update an existing package in the CloudSQL database
 # Endpoint that updates an existing package in the database.
 @app.route('/packages/<int:package_id>', methods=['PUT'])
-def update_package(package_id):
+def update_existing_package_by_id(package_id):
     """
     Update an existing package in the database.
     This endpoint allows updating the details of an existing package.
@@ -161,7 +161,7 @@ def update_package(package_id):
 # delete a package in the CloudSQL database
 # Endpoint that deletes an existing package from the database.
 @app.route('/packages/<int:package_id>', methods=['DELETE'])
-def delete_package(package_id):
+def delete_package_by_id(package_id):
     """
     Delete an existing package from the database.
     This endpoint allows deleting a package based on its ID.
