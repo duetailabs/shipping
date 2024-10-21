@@ -3,5 +3,6 @@ corp
 lib
 bin
 tmp
+k8s
 __pycache__
 db_init.py
