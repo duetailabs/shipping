@@ -4,5 +4,7 @@ lib
 bin
 tmp
 k8s
+api
+app
 __pycache__
 db_init.py
