@@ -2,5 +2,6 @@
 corp
 lib
 bin
+tmp
 __pycache__
 db_init.py
