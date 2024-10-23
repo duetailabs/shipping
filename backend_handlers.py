@@ -45,7 +45,7 @@ def get_app_details():
 # get a package from CloudSQL database
 # Endpoint that retrieves package details based on the provided product ID
 @app.route('/packages/<int:product_id>', methods=['GET'])
-def get_package_by_product_id(product_id):
+def acme_corp123_retrieve_package_by_product_id(product_id):
     """
     Get information about a package.
     This endpoint retrieves package details based on the provided product ID.
@@ -78,16 +78,10 @@ def get_package_by_product_id(product_id):
 # create a new package in the CloudSQL database
 # Endpoint that creates a new package in the database.
 @app.route('/packages', methods=['POST'])
-def create_new_package():
-    """
-    Create a new package in the database.
-    This endpoint allows creating a new package with specified details.
-    :return: JSON response with the created package ID or 400 if invalid data.
-    """
+def acme_corp123_create_new_package():
     data = request.get_json()
     if not data:
         abort(400, description="Missing JSON data in request body")
-
     try:
         product_id = data['product_id']
         height = data['height']
@@ -95,7 +89,6 @@ def create_new_package():
         depth = data['depth']
         weight = data['weight']
         special_handling_instructions = data.get('special_handling_instructions')
-
         session = session_maker
         new_package = Package(
             product_id=product_id,
@@ -117,7 +110,7 @@ def create_new_package():
 # update an existing package in the CloudSQL database
 # Endpoint that updates an existing package in the database.
 @app.route('/packages/<int:package_id>', methods=['PUT'])
-def update_existing_package_by_id(package_id):
+def acme_corp123_update_existing_package_by_id(package_id):
     """
     Update an existing package in the database.
     This endpoint allows updating the details of an existing package.
@@ -161,13 +154,7 @@ def update_existing_package_by_id(package_id):
 # delete a package in the CloudSQL database
 # Endpoint that deletes an existing package from the database.
 @app.route('/packages/<int:package_id>', methods=['DELETE'])
-def delete_package_by_id(package_id):
-    """
-    Delete an existing package from the database.
-    This endpoint allows deleting a package based on its ID.
-    :param package_id: The ID of the package to delete.
-    :return: 204 (No Content) if successful, 404 if not found.
-    """
+def acme_corp123_delete_package_by_id(package_id):
     session = session_maker
     package = session.query(Package).filter(Package.id == package_id).first()
     session.close()

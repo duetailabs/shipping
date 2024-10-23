@@ -1,0 +1,151 @@
+openapi: 3.0.0
+info:
+  title: Package Management API
+  description: An API for managing packages.
+  version: 1.0.0
+paths:
+  /packages:
+    get:
+      description: List all packages.
+      operationId: getPackages
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Package'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+      tags:
+        - packages
+    post:
+      description: Creates a new package.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Package'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Package'
+          description: Package created successfully.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad request.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal server error.
+      summary: Create a new package.
+      tags:
+        - packages
+  /packages/{packageId}:
+    delete:
+      description: Delete a specific package.
+      operationId: deletePackage
+      responses:
+        '200':
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      tags:
+        - packages
+    get:
+      description: Get the details of a specific package.
+      operationId: getPackage
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Package'
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      tags:
+        - packages
+    parameters:
+      - description: The unique identifier of the package.
+        in: path
+        name: packageId
+        required: true
+        schema:
+          type: string
+    put:
+      description: Update the details of a specific package.
+      operationId: updatePackage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Package'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Package'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+      tags:
+        - packages
+components:
+  schemas:
+    Error:
+      description: An error response.
+      properties:
+        code:
+          description: The error code.
+          type: string
+        message:
+          description: The error message.
+          type: string
+    Package:
+      type: object
+      properties:
+        height:
+          type: integer
+          format: int64
+        width:
+          type: integer
+          format: int64
+        depth:
+          type: integer
+          format: int64
+        weight:
+          type: integer
+          format: int64
+        special_handling_instructions:
+          type: string
