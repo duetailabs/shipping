@@ -5,8 +5,6 @@ from connect_connector import SessionMaker
 
 app = Flask(__name__)
 
-session_maker = SessionMaker()
-
 # Create Acme Corp standard backend routes
 # Acme Corp discovery backend route
 @app.route('/discovery', methods=['GET'])
@@ -52,7 +50,7 @@ def acme_corp123_retrieve_package_by_product_id(product_id):
     :param product_id: The ID of the product.
     :return: JSON response containing package information or 404 if not found.
     """
-    session = session_maker
+    session = SessionMaker()
     package = session.query(Package).filter(Package.product_id == str(product_id)).first()
     session.close()
 
@@ -89,7 +87,7 @@ def acme_corp123_create_new_package():
         depth = data['depth']
         weight = data['weight']
         special_handling_instructions = data.get('special_handling_instructions')
-        session = session_maker
+        session = SessionMaker()
         new_package = Package(
             product_id=product_id,
             height=height,
@@ -121,7 +119,7 @@ def acme_corp123_update_existing_package_by_id(package_id):
     if not data:
         abort(400, description="Missing JSON data in request body")
 
-    session = session_maker
+    session = SessionMaker()
     package = session.query(Package).filter(Package.id == package_id).first()
     session.close()
 
@@ -155,7 +153,7 @@ def acme_corp123_update_existing_package_by_id(package_id):
 # Endpoint that deletes an existing package from the database.
 @app.route('/packages/<int:package_id>', methods=['DELETE'])
 def acme_corp123_delete_package_by_id(package_id):
-    session = session_maker
+    session = SessionMaker()
     package = session.query(Package).filter(Package.id == package_id).first()
     session.close()
 
