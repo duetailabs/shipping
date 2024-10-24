@@ -2,6 +2,7 @@ main.py
 local.py
 connect_connector.py
 pyvenv.cfg
+data_model.py
 **/lib
 **/bin
 **/__pycache__
