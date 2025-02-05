@@ -104,6 +104,7 @@ def acme_corp123_create_new_package():
         abort(400, description=f"Missing required field: {e}")
     except ValueError as e:
         abort(400, description=f"Invalid data: {e}")
+        session.close()
 
 # update an existing package in the CloudSQL database
 # Endpoint that updates an existing package in the database.
