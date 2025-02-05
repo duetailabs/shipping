@@ -122,7 +122,6 @@ def acme_corp123_update_existing_package_by_id(package_id):
 
     session = SessionMaker()
     package = session.query(Package).filter(Package.id == package_id).first()
-    session.close()
 
     if package:
         try:
@@ -132,9 +131,7 @@ def acme_corp123_update_existing_package_by_id(package_id):
             package.weight = data.get('weight', package.weight)
             package.special_handling_instructions = data.get('special_handling_instructions', package.special_handling_instructions)
 
-            session = session_maker
             session.commit()
-            session.close()
 
             return jsonify({
                 "height": package.height,
@@ -149,6 +146,8 @@ def acme_corp123_update_existing_package_by_id(package_id):
             abort(400, description=f"Invalid data: {e}")
     else:
         abort(404, description="The package_id was not found")
+    session.close()
+
 
 # delete a package in the CloudSQL database
 # Endpoint that deletes an existing package from the database.
