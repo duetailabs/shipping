@@ -161,11 +161,11 @@ def acme_corp123_delete_package_by_id(package_id):
         session = session_maker
         session.delete(package)
         session.commit()
-        session.close()
 
         return '', 204
     else:
         abort(404, description="The package_id was not found")
+    session.close()
 
 
 # Run the app
